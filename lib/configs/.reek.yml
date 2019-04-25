@@ -1,0 +1,22 @@
+---
+detectors:
+  Attribute:
+    enabled: false
+
+  ControlParameter:
+    enabled: false
+
+  FeatureEnvy:
+    enabled: false
+
+  IrresponsibleModule:
+    enabled: false
+
+  NestedIterators:
+    max_allowed_nesting: 2
+
+  TooManyStatements:
+    max_statements: 6
+
+  UtilityFunction:
+    enabled: false

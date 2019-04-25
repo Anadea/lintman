@@ -1,0 +1,37 @@
+---
+require:
+  - rubocop-performance
+  - rubocop-rspec
+
+AllCops:
+  Exclude:
+    - 'bin/**/*'
+    - 'db/**/*'
+    - 'vendor/**/*'
+    - 'spec/fixtures/**/*'
+    - 'tmp/**/*'
+
+Metrics/LineLength:
+  Max: 120
+
+Documentation:
+  Enabled: false
+
+FrozenStringLiteralComment:
+  Enabled: false
+
+Style/LambdaCall:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'config/environments/*.rb'
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'spec/**/*.rb'
+
+Rails:
+  Enabled: true
+
+RSpec/MultipleExpectations:
+  Enabled: false
