@@ -10,15 +10,13 @@ class Lintman::Railtie < Rails::Railtie
     require 'pry-rails'
     require 'pry-rescue'
     require 'pry-stack_explorer'
+
+    rake_tasks do
+      load 'tasks/lintman.rake'
+    end
   end
 
   if Rails.env.test?
     require 'simplecov'
-  end
-
-  if Rails.env.development?
-    rake_tasks do
-      load 'tasks/lintman.rake'
-    end
   end
 end
