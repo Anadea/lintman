@@ -170,10 +170,7 @@ namespace :lintman do
     end
   end
 
-  desc 'Bundler audit'
-  task :bundler_audit do
-    system 'bundle audit check --update'
-  end
+  # Diagrams ----------------------------------------------------------------------------------------------------------
 
   desc 'Generate ER-diagram'
   task :rails_erd do
@@ -200,35 +197,48 @@ namespace :lintman do
     system 'rm doc/*.dot'
   end
 
-  desc 'Run Reek'
-  task :reek do
-    system 'bundle exec reek -c .reek.yml'
+  # Linters -----------------------------------------------------------------------------------------------------------
+
+  tasks = {
+    bundler_audit: {
+      command: 'bundle audit check --update'
+    },
+    reek: {
+      command: 'bundle exec reek -c .reek.yml'
+    },
+    rubocop: {
+      command: 'bundle exec rubocop'
+    },
+    rails_best_practices: {
+      command: 'bundle exec rails_best_practices --config .rails_best_practices.yml --silent --exclude "db/migrate"'
+    },
+    rubycritic: {
+      command: 'bundle exec rubycritic -f html -f console --no-browser --path doc/rubycritic app config lib'
+    },
+    fasterer: {
+      command: 'bundle exec fasterer'
+    },
+    brakeman: {
+      command: 'bundle exec brakeman -q'
+    },
+    i18n_tasks: {
+      command: 'bundle exec i18n-tasks health'
+    },
+    lol_dba: {
+      command: 'bundle exec rails db:find_indexes'
+    },
+  }
+
+  tasks.each do |name, command:|
+    desc "Run #{name}"
+    task name.to_sym, [:return_exitcode] => :environment do |_, args|
+      system command
+
+      raise unless args.return_exitcode || $?.success?
+    end
   end
 
-  desc 'Run Rubocop'
-  task :rubocop do
-    system 'bundle exec rubocop'
-  end
-
-  desc 'Run Rails Best Practices'
-  task :rails_best_practices do
-    system 'bundle exec rails_best_practices --silent'
-  end
-
-  desc 'Run Rubycritic'
-  task :rubycritic do
-    system 'bundle exec rubycritic --no-browser --path doc/rubycritic'
-  end
-
-  desc 'Run Fasterer'
-  task :fasterer do
-    system 'bundle exec fasterer'
-  end
-
-  desc 'Run Brakeman'
-  task :brakeman do
-    system 'bundle exec brakeman -q'
-  end
+  # -------------------------------------------------------------------------------------------------------------------
 
   desc 'Report code statistics (KLOCs, etc) from the application or engine'
   task :stats do
@@ -291,19 +301,21 @@ namespace :lintman do
   task :all do
     %w[
       bundler_audit
-      rails_erd
-      railroady
       reek
       rubocop
       rails_best_practices
       rubycritic
       fasterer
       brakeman
+      i18n_tasks
+      lol_dba
+      rails_erd
+      railroady
       stats
     ].each do |task|
       box task
 
-      Rake::Task["lintman:#{task}"].invoke
+      Rake::Task["lintman:#{task}"].invoke(true)
 
       puts
     end
