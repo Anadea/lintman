@@ -23,6 +23,21 @@ By executing the command below, you'll get a list of commands that will allow yo
 
 ```bash
 $ rails --tasks lintman
+
+rails lintman:all                  # Run ALL linters
+rails lintman:brakeman             # Run brakeman
+rails lintman:bundler_audit        # Run bundler_audit
+rails lintman:fasterer             # Run fasterer
+rails lintman:i18n_tasks           # Run i18n_tasks
+rails lintman:install              # Install lintman
+rails lintman:lol_dba              # Run lol_dba
+rails lintman:railroady            # Generate UML diagrams
+rails lintman:rails_best_practices # Run rails_best_practices
+rails lintman:rails_erd            # Generate ER-diagram
+rails lintman:reek                 # Run reek
+rails lintman:rubocop              # Run rubocop
+rails lintman:rubycritic           # Run rubycritic
+rails lintman:stats                # Report code statistics (KLOCs, etc) from the application or engine
 ```
 
 ## License
