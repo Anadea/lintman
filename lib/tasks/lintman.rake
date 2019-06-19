@@ -151,7 +151,7 @@ namespace :lintman do
 
       If you want to see test coverage report you need to run tests first:
 
-        $ rspec
+        $ COVERAGE=1 rspec
 
       For more information see:
 
@@ -322,7 +322,9 @@ namespace :lintman do
   end
 
   def box(text, header_color: :yellow, color: :default)
-    puts "-- #{text.upcase} #{'-' * (IO.console.winsize.last - text.length - 4)}\n".colorize(header_color)
+    winsize = IO.console&.winsize&.last || 80
+
+    puts "-- #{text.upcase} #{'-' * (winsize - text.length - 4)}\n".colorize(header_color)
 
     return unless block_given? && yield.is_a?(String)
 
